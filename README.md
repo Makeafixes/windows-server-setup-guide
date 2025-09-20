@@ -83,7 +83,34 @@ If Server 2022 is too heavy for your workload:
 ├── docs/                  # Setup guides and screenshots
 ├── config/                # Example server role configurations
 ├── scripts/               # PowerShell automation scripts
+│   ├── Set-StaticIP.ps1    # Configure static IP
+│   ├── Install-Roles.ps1   # Install common server roles
+│   └── Create-Users.ps1    # Create local/domain users
 └── README.md              # Main project documentation
+```
+
+---
+
+## 💻 Example PowerShell Scripts
+
+### Set Static IP
+
+```powershell
+New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress 192.168.1.10 -PrefixLength 24 -DefaultGateway 192.168.1.1
+Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses 192.168.1.1
+```
+
+### Install Common Roles
+
+```powershell
+Install-WindowsFeature -Name AD-Domain-Services, DNS, DHCP, File-Services, Print-Services -IncludeManagementTools
+```
+
+### Create Local Users
+
+```powershell
+New-LocalUser -Name "employee1" -Password (ConvertTo-SecureString "P@ssword123" -AsPlainText -Force) -FullName "Employee One" -Description "Standard User"
+Add-LocalGroupMember -Group "Users" -Member "employee1"
 ```
 
 ---
